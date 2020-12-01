@@ -40,6 +40,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	defer file.Close()
+
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanWords)
 	var nums []int
