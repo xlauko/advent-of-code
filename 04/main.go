@@ -67,16 +67,8 @@ func validField(key, val string) bool {
 			return false
 		}
 
-		if _, err := strconv.ParseUint(val[1:3], 16, 8); err != nil {
-			return false
-		}
-		if _, err := strconv.ParseUint(val[3:5], 16, 8); err != nil {
-			return false
-		}
-		if _, err := strconv.ParseUint(val[5:7], 16, 8); err != nil {
-			return false
-		}
-		return true
+		_, err := strconv.ParseInt(val[1:], 16, 0)
+		return err == nil
 	case "ecl":
 		_, found := eyes[val]
 		return found
