@@ -1,3 +1,3 @@
-module utils/algo
+module utils
 
 go 1.15

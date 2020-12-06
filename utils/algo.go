@@ -1,4 +1,4 @@
-package algo
+package utils
 
 // CountIf counts number of elements satisfying predicate
 func CountIf(arr []int, pred func(int) bool) int {
