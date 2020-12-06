@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	algo "utils/algo/utils"
 )
 
 func answers(group []string) []int {
@@ -14,16 +15,6 @@ func answers(group []string) []int {
 		}
 	}
 	return ans
-}
-
-func count(arr []int, pred func(int) bool) int {
-	res := 0
-	for _, count := range arr {
-		if pred(count) {
-			res++
-		}
-	}
-	return res
 }
 
 func main() {
@@ -38,8 +29,8 @@ func main() {
 		line := scanner.Text()
 		if line == "" {
 			ans := answers(group)
-			count1 += count(ans, func(a int) bool { return a > 0 })
-			count2 += count(ans, func(a int) bool { return a == len(group) })
+			count1 += algo.CountIf(ans, func(a int) bool { return a > 0 })
+			count2 += algo.CountIf(ans, func(a int) bool { return a == len(group) })
 			group = nil
 		} else {
 			group = append(group, line)
