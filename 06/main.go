@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-func answers(group []string) [26]int {
-	var ans [26]int
+func answers(group []string) []int {
+	ans := make([]int, 26)
 	for _, line := range group {
 		for _, c := range line {
 			ans[c-'a']++
@@ -16,10 +16,9 @@ func answers(group []string) [26]int {
 	return ans
 }
 
-func count(group []string, pred func(int) bool) int {
-	ans := answers(group)
+func count(arr []int, pred func(int) bool) int {
 	res := 0
-	for _, count := range ans {
+	for _, count := range arr {
 		if pred(count) {
 			res++
 		}
@@ -38,8 +37,9 @@ func main() {
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
-			count1 += count(group, func(a int) bool { return a > 0 })
-			count2 += count(group, func(a int) bool { return a == len(group) })
+			ans := answers(group)
+			count1 += count(ans, func(a int) bool { return a > 0 })
+			count2 += count(ans, func(a int) bool { return a == len(group) })
 			group = nil
 		} else {
 			group = append(group, line)
