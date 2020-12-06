@@ -41,3 +41,13 @@ func Min(arr []int) int {
 	}
 	return res
 }
+
+// FindIf element in arr
+func FindIf(arr []int, pred func(int) bool) (int, int) {
+	for idx, v := range arr {
+		if pred(v) {
+			return idx, v
+		}
+	}
+	return -1, -1
+}

@@ -1,30 +1,16 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
+	"utils/utils"
 )
 
 func main() {
-	file, err := os.Open("big.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	min, max := 1024, 0
-
-	var seen [1024]bool
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
+	var seen [1024]int
+	min, max := len(seen), 0
+	utils.ScanLine("big.txt", func(line string) {
 		replacer := strings.NewReplacer("F", "0", "B", "1", "L", "0", "R", "1")
 		id, _ := strconv.ParseInt(replacer.Replace(line), 2, 0)
 
@@ -35,17 +21,11 @@ func main() {
 		if int(id) > max {
 			max = int(id)
 		}
-		seen[id] = true
-	}
+		seen[id] = 1
+	})
 
-	my := 0
-	for id := min; id < max; id++ {
-		if !seen[id] {
-			my = id
-			break
-		}
-	}
+	place, _ := utils.FindIf(seen[min:max], func(val int) bool { return val == 0 })
 
 	fmt.Println("Part 1: ", max)
-	fmt.Println("Part 2: ", my)
+	fmt.Println("Part 2: ", place+min)
 }
