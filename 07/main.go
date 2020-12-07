@@ -47,13 +47,11 @@ func countContents(outer string, bags map[string][]Bag) int {
 	return result
 }
 
-func preprocess(line string) (name string, contains []string) {
+func preprocess(line string) (string, []string) {
 	replacer := strings.NewReplacer(".", "", ", ", ":", " contain ", ":", " bags", "", " bag", "")
 	line = replacer.Replace(line)
 	split := strings.Split(line, ":")
-	name = split[0]
-	contains = split[1:]
-	return
+	return split[0], split[1:]
 }
 
 func main() {
