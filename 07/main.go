@@ -28,7 +28,7 @@ func containsShiny(outer string, bags map[string][]Bag) bool {
 	return false
 }
 
-func countContaintsShiny(bags map[string][]Bag) int {
+func countContainsShiny(bags map[string][]Bag) int {
 	count := 0
 	for bag := range bags {
 		if bag != shiny && containsShiny(bag, bags) {
@@ -75,6 +75,6 @@ func main() {
 		bags[name] = contents
 	})
 
-	fmt.Println("Part 1: ", countContaintsShiny(bags))
+	fmt.Println("Part 1: ", countContainsShiny(bags))
 	fmt.Println("Part 2: ", countContents(shiny, bags)-1)
 }
