@@ -23,6 +23,14 @@ func arrangements(adaps []int) int {
 	return tab[adaps[len(adaps)-1]]
 }
 
+func jolts(adaps []int) int {
+	diffs := make(map[int]int)
+	for i := 1; i < len(adaps); i++ {
+		diffs[adaps[i]-adaps[i-1]]++
+	}
+	return diffs[1] * diffs[3]
+}
+
 func main() {
 	adaps := []int{0}
 	utils.ScanLine("big.txt", func(line string) {
@@ -32,12 +40,7 @@ func main() {
 	adaps = append(adaps, adaps[len(adaps)-1]+3)
 
 	sort.Ints(adaps)
-	jolts := make(map[int]int)
-	for i := 1; i < len(adaps); i++ {
-		diff := adaps[i] - adaps[i-1]
-		jolts[diff]++
-	}
 
-	fmt.Println("Part 1: ", jolts[1]*(jolts[3]+1))
+	fmt.Println("Part 1: ", jolts(adaps))
 	fmt.Println("Part 2: ", arrangements(adaps))
 }
