@@ -20,7 +20,7 @@ func arrangements(adaps []int) int {
 			tab[adap] += val
 		}
 	}
-	return tab[adaps[len(adaps)-1]]
+	return tab[adaps[len(adaps)-2]]
 }
 
 func jolts(adaps []int) int {
