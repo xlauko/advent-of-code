@@ -27,18 +27,19 @@ func rotate(degrees float64, vec utils.Vec2) utils.Vec2 {
 	return utils.DiscreteRotation(degrees).Transform(vec)
 }
 
-func update(vec utils.Vec2, i inst) utils.Vec2 {
-	switch i.action {
+func direction(d byte) utils.Vec2 {
+	switch d {
 	case 'N':
-		return utils.Add(vec, utils.Mul(N, i.value))
+		return N
 	case 'S':
-		return utils.Add(vec, utils.Mul(S, i.value))
+		return S
 	case 'E':
-		return utils.Add(vec, utils.Mul(E, i.value))
+		return E
 	case 'W':
-		return utils.Add(vec, utils.Mul(W, i.value))
+		return W
 	}
-	panic("unknown action")
+	panic("unknown direction")
+
 }
 
 func simulate(insts []inst, dir utils.Vec2, updateWayPoint bool) state {
@@ -52,13 +53,15 @@ func simulate(insts []inst, dir utils.Vec2, updateWayPoint bool) state {
 			s.dir = rotate(i.value, s.dir)
 		} else if i.action == 'R' {
 			s.dir = rotate(360-i.value, s.dir)
-		} else if updateWayPoint {
-			s.dir = update(s.dir, i)
 		} else {
-			s.pos = update(s.pos, i)
+			update := utils.Mul(direction(i.action), i.value)
+			if updateWayPoint {
+				s.dir.Add(update)
+			} else {
+				s.pos.Add(update)
+			}
 		}
 	}
-
 	return s
 }
 
