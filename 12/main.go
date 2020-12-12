@@ -16,13 +16,6 @@ type inst struct {
 	value  float64
 }
 
-var (
-	N = utils.Vec2{X: 0, Y: 1}
-	S = utils.Vec2{X: 0, Y: -1}
-	E = utils.Vec2{X: 1, Y: 0}
-	W = utils.Vec2{X: -1, Y: 0}
-)
-
 func rotate(degrees float64, vec utils.Vec2) utils.Vec2 {
 	return utils.DiscreteRotation(degrees).Transform(vec)
 }
@@ -30,13 +23,13 @@ func rotate(degrees float64, vec utils.Vec2) utils.Vec2 {
 func direction(d byte) utils.Vec2 {
 	switch d {
 	case 'N':
-		return N
+		return utils.Vec2{X: 0, Y: 1}
 	case 'S':
-		return S
+		return utils.Vec2{X: 0, Y: -1}
 	case 'E':
-		return E
+		return utils.Vec2{X: 1, Y: 0}
 	case 'W':
-		return W
+		return utils.Vec2{X: -1, Y: 0}
 	}
 	panic("unknown direction")
 
@@ -73,7 +66,7 @@ func main() {
 		insts = append(insts, inst{action: a, value: v})
 	})
 
-	fmt.Println("Part 1: ", simulate(insts, E, false).pos.ManhattanLength())
+	fmt.Println("Part 1: ", simulate(insts, direction('E'), false).pos.ManhattanLength())
 
 	wayPoint := utils.Vec2{X: 10, Y: 1}
 	fmt.Println("Part 2: ", simulate(insts, wayPoint, true).pos.ManhattanLength())
