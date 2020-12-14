@@ -48,3 +48,11 @@ func ScanGroup(filename string, f func([]string)) error {
 
 	return scanner.Err()
 }
+
+func Lines(filename string) []string {
+	var lines []string
+	ScanLine(filename, func(line string) {
+		lines = append(lines, line)
+	})
+	return lines
+}
