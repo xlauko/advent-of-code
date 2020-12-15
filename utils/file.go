@@ -3,6 +3,8 @@ package utils
 import (
 	"bufio"
 	"os"
+	"strconv"
+	"strings"
 )
 
 // ScanLine takes a file name and calls f for each line of the file
@@ -55,4 +57,15 @@ func Lines(filename string) []string {
 		lines = append(lines, line)
 	})
 	return lines
+}
+
+func ScanNumbers(filename, delim string) []int {
+	var nums []int
+	ScanLine(filename, func(line string) {
+		for _, i := range strings.Split(line, delim) {
+			v, _ := strconv.Atoi(i)
+			nums = append(nums, v)
+		}
+	})
+	return nums
 }
