@@ -51,3 +51,19 @@ func FindIf(arr []int, pred func(int) bool) (int, int) {
 	}
 	return -1, -1
 }
+
+func Find(arr []int, val int) (int, bool) {
+	for i, v := range arr {
+		if v == val {
+			return i, true
+		}
+	}
+	return 0, false
+}
+
+func Delete(arr []int, val int) []int {
+	if i, found := Find(arr, val); found {
+		return append(arr[:i], arr[i+1:]...)
+	}
+	return arr[:]
+}
