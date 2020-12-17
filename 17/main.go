@@ -65,6 +65,7 @@ func countActive(world map[Pos]bool, pos Pos, neighbours Neighbours) (active int
 
 func next(world map[Pos]bool, neighbours Neighbours) <-chan Pos {
 	ch := make(chan Pos)
+	checked := make(map[Pos]bool)
 	go func() {
 		for pos := range world {
 			active := countActive(world, pos, neighbours)
@@ -73,8 +74,11 @@ func next(world map[Pos]bool, neighbours Neighbours) <-chan Pos {
 			}
 
 			for n := range neighbours(pos) {
-				if !world[n] && countActive(world, n, neighbours) == 3 {
-					ch <- n
+				if !world[n] && !checked[n] {
+					checked[n] = true
+					if countActive(world, n, neighbours) == 3 {
+						ch <- n
+					}
 				}
 			}
 		}
