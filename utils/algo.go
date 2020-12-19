@@ -67,3 +67,19 @@ func Delete(arr []int, val int) []int {
 	}
 	return arr[:]
 }
+
+func FindStr(arr []string, val string) (int, bool) {
+	for i, v := range arr {
+		if v == val {
+			return i, true
+		}
+	}
+	return 0, false
+}
+
+func DeleteStr(arr []string, val string) []string {
+	if i, found := FindStr(arr, val); found {
+		return append(arr[:i], arr[i+1:]...)
+	}
+	return arr[:]
+}
