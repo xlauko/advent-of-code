@@ -137,6 +137,10 @@ type Solver struct {
 	tiles map[int]Tile
 	match map[int][]int
 	used  map[int]bool
+
+	corners []int
+	sides   []int
+	inner   []int
 }
 
 func NewSolver(tiles map[int]Tile) *Solver {
@@ -152,6 +156,10 @@ func NewSolver(tiles map[int]Tile) *Solver {
 	}
 	s.match = match
 	s.used = make(map[int]bool)
+
+	s.corners = s.getCorners()
+	s.sides = s.getSides()
+	s.inner = s.getInner()
 	return s
 }
 
@@ -173,7 +181,7 @@ func (s *Solver) puzzle() Puzzle {
 	return tab
 }
 
-func (s *Solver) corners() []int {
+func (s *Solver) getCorners() []int {
 	var result []int
 	for id, neighbours := range s.match {
 		if len(neighbours) == 2 {
@@ -183,7 +191,7 @@ func (s *Solver) corners() []int {
 	return result
 }
 
-func (s *Solver) sides() []int {
+func (s *Solver) getSides() []int {
 	var result []int
 	for id, neighbours := range s.match {
 		if len(neighbours) == 3 {
@@ -193,7 +201,7 @@ func (s *Solver) sides() []int {
 	return result
 }
 
-func (s *Solver) inner() []int {
+func (s *Solver) getInner() []int {
 	var result []int
 	for id, neighbours := range s.match {
 		if len(neighbours) == 4 {
@@ -205,14 +213,14 @@ func (s *Solver) inner() []int {
 
 func (s *Solver) posibilities(pos Pos) []int {
 	if pos.isCorner(s.side()) {
-		return s.corners()
+		return s.corners
 	}
 
 	if pos.isSide(s.side()) {
-		return s.sides()
+		return s.sides
 	}
 
-	return s.inner()
+	return s.inner
 }
 
 func fit(tab Puzzle, tile []string, pos Pos) bool {
