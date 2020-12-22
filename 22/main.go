@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"strings"
 	"utils/utils"
 )
 
@@ -40,18 +39,10 @@ func (self *Deck) score() int {
 	return res
 }
 
-func (self *Deck) toString() string {
-	strs := make([]string, len(*self))
-	for i, v := range *self {
-		strs[i] = strconv.Itoa(v)
-	}
-	return strings.Join(strs, ".")
-}
-
 func game(p1, p2 Deck, recurse bool) (int, int) {
-	seen := make(map[string]bool)
+	seen := make(map[int]bool)
 	for !p1.empty() && !p2.empty() {
-		state := p1.toString() + "-" + p2.toString()
+		state := p1.score() * p2.score()
 		if seen[state] {
 			return 1, p1.score()
 		}
