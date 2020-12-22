@@ -19,15 +19,9 @@ func (self *Deck) dequeue() int {
 }
 
 func (self *Deck) copy(n int) Deck {
-	var deck Deck
-	for _, card := range (*self)[:n] {
-		deck = append(deck, card)
-	}
+	deck := make([]int, n)
+	copy(deck, (*self)[:n])
 	return deck
-}
-
-func (self *Deck) empty() bool {
-	return len(*self) == 0
 }
 
 func (self *Deck) score() int {
@@ -41,7 +35,7 @@ func (self *Deck) score() int {
 
 func game(p1, p2 Deck, recurse bool) (int, int) {
 	seen := make(map[int]bool)
-	for !p1.empty() && !p2.empty() {
+	for len(p1) != 0 && len(p2) != 0 {
 		state := p1.score() * p2.score()
 		if seen[state] {
 			return 1, p1.score()
@@ -67,7 +61,7 @@ func game(p1, p2 Deck, recurse bool) (int, int) {
 		}
 	}
 
-	if p1.empty() {
+	if len(p1) == 0 {
 		return 2, p2.score()
 	}
 	return 1, p1.score()
