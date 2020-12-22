@@ -33,12 +33,12 @@ func (self *Deck) score() int {
 	return res
 }
 
-func game(p1, p2 Deck, recurse bool) (int, int) {
+func game(p1, p2 Deck, recurse bool) (int, Deck) {
 	seen := make(map[int]bool)
 	for len(p1) != 0 && len(p2) != 0 {
 		state := p1.score() * p2.score()
 		if seen[state] {
-			return 1, p1.score()
+			return 1, p1
 		}
 		seen[state] = true
 
@@ -62,9 +62,9 @@ func game(p1, p2 Deck, recurse bool) (int, int) {
 	}
 
 	if len(p1) == 0 {
-		return 2, p2.score()
+		return 2, p2
 	}
-	return 1, p1.score()
+	return 1, p1
 }
 
 func deal(file string) []Deck {
@@ -81,14 +81,10 @@ func deal(file string) []Deck {
 	return decks
 }
 
-func play(file string, recursive bool) int {
-	decks := deal(file)
-	_, score := game(decks[0], decks[1], recursive)
-	return score
-}
-
 func main() {
-	file := "big.txt"
-	fmt.Println("Part 1: ", play(file, false))
-	fmt.Println("Part 2: ", play(file, true))
+	decks := deal("big.txt")
+	_, winner := game(decks[0], decks[1], false)
+	fmt.Println("Part 1: ", winner.score())
+	_, winner = game(decks[0], decks[1], true)
+	fmt.Println("Part 2: ", winner.score())
 }
