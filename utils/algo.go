@@ -61,6 +61,11 @@ func Find(arr []int, val int) (int, bool) {
 	return 0, false
 }
 
+func IsIn(val int, arr []int) bool {
+	_, found := Find(arr, val)
+	return found
+}
+
 func Delete(arr []int, val int) []int {
 	if i, found := Find(arr, val); found {
 		return append(arr[:i], arr[i+1:]...)
