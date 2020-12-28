@@ -1,9 +1,7 @@
 module Day01
 
-import System
 import System.File
 import Data.Strings
-import Data.List
 
 import AoC.Util
 
