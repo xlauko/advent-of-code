@@ -16,6 +16,17 @@ export
 catMaybes : List (Maybe a) -> List a
 catMaybes = mapMaybe id
 
+export
+groupBy : (a -> a -> Bool) -> List a -> List (List a)
+groupBy _ [] = []
+groupBy p list@(x :: xs) =
+  let (ys, zs) = span (p x) xs in
+    (x :: ys) :: groupBy p (assert_smaller list zs)
+
+export
+group : Eq a => List a -> List (List a)
+group = groupBy (==)
+
 -- input parsers
 
 export
