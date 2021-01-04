@@ -27,6 +27,16 @@ export
 group : Eq a => List a -> List (List a)
 group = groupBy (==)
 
+export 
+swap : (a, b) -> (b, a)
+swap (a, b) = (b, a)
+
+-- string helpers
+
+export
+onString : ((List Char) -> (List Char)) -> (String -> String)
+onString f = pack . f . unpack
+
 -- input parsers
 
 export
