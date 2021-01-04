@@ -9,9 +9,9 @@ requireFuel : (mass : Int) -> (fuel : Int)
 requireFuel mass = (div mass 3) - 2
 
 requireFuelRec : (mass : Int) -> (fuel : Int)
-requireFuelRec mass = if fuel > 0 then fuel + (requireFuelRec fuel) else 0 where
-  fuel : Int
-  fuel = requireFuel mass
+requireFuelRec mass
+  = let fuel = requireFuel mass in
+    if fuel > 0 then fuel + (requireFuelRec fuel) else 0
 
 sumFuel : (Int -> Int) -> (List Int) -> Int
 sumFuel fuel modules = sum $ fuel <$> modules
