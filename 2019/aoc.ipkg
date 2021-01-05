@@ -1,0 +1,6 @@
+package aoc
+
+modules = Day01, Day04, Day06
+
+depends = contrib
+
