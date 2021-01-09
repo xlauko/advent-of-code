@@ -27,9 +27,18 @@ export
 group : Eq a => List a -> List (List a)
 group = groupBy (==)
 
-export 
+export
 swap : (a, b) -> (b, a)
 swap (a, b) = (b, a)
+
+export
+pow : Num a => a -> Nat -> a
+pow _  0  = 1
+pow x (S n) = x * (pow x n)
+
+export
+digit : Nat -> Int -> Int
+digit d n = n `div` (pow 10 d) `mod` 10
 
 -- string helpers
 
@@ -40,6 +49,6 @@ onString f = pack . f . unpack
 -- input parsers
 
 export
-ints : (lines : List String) -> List Int
-ints lines = catMaybes $ parsePositive <$> lines
+ints : (Functor listlike) => listlike String -> listlike Int
+ints = map cast
 
