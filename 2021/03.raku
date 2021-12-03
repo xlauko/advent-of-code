@@ -11,8 +11,8 @@ say "Part 1: " ~ value(@γ) * value(@ε);
 sub rating(@data, $op) {
     for 0..* -> $i {
         return value(@data[0]) if @data.elems == 1;
-        my $bit = $op(([+] @data».[$i]), @data.elems / 2);
-        @data = @data.grep: { .[$i] == $bit.Int };
+        my $bit = $op(([+] @data».[$i]), @data.elems / 2).Int;
+        @data = @data.grep: { .[$i] == $bit };
     }
 }
 
