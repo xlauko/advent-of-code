@@ -12,7 +12,6 @@ sub prefix:<neigh>($pos) { [(-1, 0), (1, 0), (0, -1), (0, 1)].map($pos «+» *);
 
 sub infix:<around>(@p, $pos) { (neigh $pos).map(@p at *) }
 
-
 my @risks = ( ^$h X ^$w ).grep( -> $p { (@plane around $p).map( @plane at $p < * ).all } );
 
 say "Part 1: " ~ ([+] @risks.map(@plane at *)) + @risks.elems;
@@ -24,12 +23,15 @@ sub infix:<growfrom>(@p, $pos) {
 
 sub basin($pos) {
     my @q = [$pos];
-    my $seen = SetHash.new;
+    my $seen = SetHash.new(< $pos.join >);
     while @q {
         my $p = @q.shift;
-        next if $seen< $p.join >;
-        push @q, |(@plane growfrom $p);
-        $seen.set($p.join);
+        for (@plane growfrom $p) -> $n {
+            if $n.join ∉ $seen {
+                $seen.set($n.join);
+                push @q, $n;
+            }
+        }
     }
 
     return $seen.elems;
