@@ -3,33 +3,24 @@
 my @mask = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)];
 
 sub infix:<⊕>(@grid, ($r, $c)) {
-    if (0 ≤ $c < 10 and 0 ≤ $r < 10 and @grid[$r; $c] ≤ 9) {
-        return (++@grid[$r; $c]) == 10;
+    if 0 ≤ $c ≤ 9 and 0 ≤ $r ≤ 9 and @grid[$r; $c] ≠ 0 {
+        return ++@grid[$r; $c];
     }
-    return False;
+    return 0;
 }
 
 sub flash(@grid, $pos) {
+    @grid[$pos[0]; $pos[1]] = 0;
     for @mask -> $n {
-        if @grid ⊕ ($n «+» $pos) {
+        if @grid ⊕ ($n «+» $pos) > 9 {
             flash(@grid, ($n «+» $pos));
         }
     }
 }
 
 sub step(@grid) {
-    for ^10 X ^10 -> $pos {
-        if @grid ⊕ $pos {
-            flash(@grid, $pos);
-        }
-    }
-
-    for ^10 X ^10 -> ($r; $c) {
-        if @grid[$r; $c] == 10 {
-            @grid[$r; $c] = 0;
-        }
-    }
-
+    for ^10 X ^10 -> ($r, $c) { @grid[$r; $c]++; }
+    for ^10 X ^10 -> ($r, $c) { flash(@grid, ($r, $c)) if @grid[$r; $c] > 9; }
     return @grid».List.flat.grep(* == 0);
 }
 
