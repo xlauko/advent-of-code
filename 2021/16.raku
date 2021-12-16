@@ -34,8 +34,8 @@ sub eval(@data) {
         when 1 { [*] @values }
         when 2 { min @values }
         when 3 { max @values }
-        when 5 { [<] @values }
-        when 6 { [>] @values }
+        when 5 { [>] @values }
+        when 6 { [<] @values }
         when 7 { [==] @values }
     };
 };
