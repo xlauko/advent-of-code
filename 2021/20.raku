@@ -4,7 +4,7 @@ my @input = slurp.split("\n\n");
 
 my @mask = @input[0].=trans( '.' => '0', '#' => '1' ).comb;
 
-my %img is default('0');
+my %img;
 
 for @input[1].lines.kv -> $row, $line {
     for $line.comb.kv -> $col, $v {
@@ -15,11 +15,15 @@ for @input[1].lines.kv -> $row, $line {
 my ($minx, $maxx, $miny, $maxy) = (0, @input[1].lines[0].chars, 0, @input[1].lines.elems);
 
 my @around = (-1, 0, 1) X (-1, 0, 1);
+my $default = '0';
+
+sub infix:<@>($r, $c) {  }
+
 sub value($row, $col) {
     my $idx;
     for @around -> ($dr, $dc) {
         my ($r, $c) = ($row + $dr, $col + $dc);
-        push $idx, %img{"$r:$c"};
+        push $idx, (%img{"$r:$c"}:exists ?? %img{"$r:$c"} !! $default);
     }
     return @mask[$idx.join.parse-base(2)]
 }
@@ -30,10 +34,11 @@ sub enhance(%img) {
     for ($miny ... ^$maxy) X ($minx ... ^$maxx) -> ($row, $col) {
         %next{"$row:$col"} = value($row, $col);
     }
+    $default = ($default + 1) % 2;
     return %next;
 }
 
-%img = enhance(%img) for ^2;
+%img= enhance(%img) for ^2;
 say "Part 1: " ~ [+] %img.values;
 
 %img = enhance(%img) for ^48;
