@@ -2,7 +2,7 @@ using Mods
 
 const input = readlines(stdin) .|> split
 
-parse_one(c, base) = Mod{3}(Int(c[1]) - Int(base))
+parse_one(c, base) = Mod{3}(c[1] - base)
 parse(p) = parse_one(p[1], 'A'), parse_one(p[2], 'X')
 
 play(a, b) = value(b - a + 1) * 3 + value(b) + 1
