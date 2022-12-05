@@ -31,5 +31,5 @@ const stacks = [
     ['P']
 ]
 
-println("Parst 2: ", solve(input, deepcopy(stacks), move_one))
+println("Parst 1: ", solve(input, deepcopy(stacks), move_one))
 println("Parst 2: ", solve(input, deepcopy(stacks), move_two))
