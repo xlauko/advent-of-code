@@ -7,7 +7,6 @@ function solve(data, len)
             return i + len - 1
         end
     end
-    return 0
 end
 
 println("Parst 1: ", solve(input, 4))
