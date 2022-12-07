@@ -30,4 +30,4 @@ is_small = dir -> dir[2] <= 100000
 is_large = dir -> dir[2] >= required
 
 println("Part 1: ", values(filter(is_small, dirs)) |> sum)
-println("Parst 2: ", values(filter(is_large, dirs)) |> minimum)
+println("Part 2: ", values(filter(is_large, dirs)) |> minimum)
