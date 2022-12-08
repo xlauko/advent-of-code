@@ -1,12 +1,12 @@
 using IterTools
 
-function string_block_to_matrix(input)
-    as_arrays = split.(split(input, "\n"), "")
-    as_int_arrays = [parse.(Int, array) for array in as_arrays]
-    Matrix(transpose(hcat(as_int_arrays...)))
-end
+int(s) = parse(Int, s)
+mapby(f) = x -> map(f, x)
+reduceby(f) = x -> reduce(f, x)
 
-const hmap = string_block_to_matrix(read(stdin, String))
+fall(f) = x -> all(f, x)
+
+const hmap = stdin |> eachline .|> collect .|> mapby(int) |> reduceby(hcat)
 const (rows, cols) = size(hmap)
 
 dirs(row, col) = [
@@ -16,7 +16,7 @@ dirs(row, col) = [
     hmap[row + 1:rows, col]
 ]
 
-visible((row, col)) = any(line -> all(<(hmap[row, col]), line), dirs(row, col))
+visible((row, col)) = any(fall(<(hmap[row, col])), dirs(row, col))
 
 function score((row, col))
     count_trees(line) = (smaller = findfirst(>=(hmap[row, col]), line)) === nothing ? length(line) : smaller
