@@ -2,7 +2,7 @@ using Distances
 using Base.Iterators
 
 int(s) = parse(Int, s)
-pairwise(x) = zip(x, x[2:end]) |> collect
+pairwise(x) = zip(x, x[2:end])
 
 const data = readlines(stdin) .|> split
 
