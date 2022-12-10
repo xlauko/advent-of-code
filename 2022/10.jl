@@ -11,12 +11,8 @@ function solve(cmds, cycles)
     result = 0
 
     for T in 1:cycles + 1
-        print(pixel(T, X))
-        if (T - 1) % 40 == 39
-            print("\n")
-        end
-
-        if T in [20, 60, 100, 140, 180, 220] result += T * X end
+        print(pixel(T, X), ((T % 40) == 0 ? "\n" : ""))
+        if (T % 40 == 20) result += T * X end
 
         if M !== nothing
             X, M = M + X, nothing
