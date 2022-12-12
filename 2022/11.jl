@@ -5,11 +5,12 @@ mutable struct Monkey items; op; cond; test end
 byline = block -> split(block, "\n")
 int    = v -> parse(Int, v)
 
+move!(v) = splice!(v, firstindex(v):lastindex(v))
+
 function parse_monkey(chunk)
     items = split(chunk[2], (':', ','))[2:end] .|> int
 
-    impl = Meta.parse(split(chunk[3], "=")[2])
-    op   = @eval function (old) $impl end
+    op   = @eval old -> $(Meta.parse(split(chunk[3], "=")[2]))
 
     cond = match(r"Test: divisible by (\d+)", chunk[4])[1] |> int
     tres = match(r"If true: throw to monkey (\d+)", chunk[5])[1] |> int
@@ -17,7 +18,6 @@ function parse_monkey(chunk)
     test = v -> (v % cond == 0 ? tres : fres) + 1
     return Monkey(items, op, cond, test)
 end
-
 
 function solve(monkeys, rounds, relief)
     inspect = DefaultDict(0)
@@ -27,14 +27,13 @@ function solve(monkeys, rounds, relief)
     for round in 1:rounds
         for m in monkeys
             inspect[m] += length(m.items)
-            for item in m.items
+            for item in move!(m.items)
                 worry = m.op(item) % LCM
                 if relief
                     worry = worry  ÷ 3
                 end
                 append!(monkeys[m.test(worry)].items, worry)
             end
-            m.items = []
         end
     end
 
