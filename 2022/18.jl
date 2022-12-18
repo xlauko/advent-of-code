@@ -6,7 +6,7 @@ int(v) = parse(Int, v)
 ci(x, y, z)  = CartesianIndex((x, y, z))
 
 const one   = ci(1, 1, 1)
-const cubes = readlines(stdin) .|> splitby(",") .|> mapby(int) |> mapby(v -> ci(v...) + ci(1, 1, 1))
+const cubes = readlines(stdin) .|> splitby(",") .|> mapby(int) |> mapby(v -> ci(v...) + ci(2, 2, 2))
 
 const cave  = zeros(Int, Tuple(maximum(cubes) + one))
 cave[cubes] .= 1
