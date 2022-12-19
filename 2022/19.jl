@@ -5,12 +5,7 @@ function parse_line(line)
     clay = match(r"Each clay robot costs (\d+) ore.", line)[1] |> int
     obs = match(r"Each obsidian robot costs (\d+) ore and (\d+) clay.", line).captures .|> int
     geo = match(r"Each geode robot costs (\d+) ore and (\d+) obsidian.", line).captures .|> int
-   return [
-        [ore, 0, 0, 0],
-        [clay, 0, 0, 0],
-        [obs[1], obs[2], 0, 0],
-        [geo[1], 0, geo[2], 0]
-    ]
+   return [[ore, 0, 0, 0], [clay, 0, 0, 0], [obs[1], obs[2], 0, 0], [geo[1], 0, geo[2], 0]]
 end
 
 const bps = readlines(stdin) .|> parse_line
