@@ -31,7 +31,8 @@ function quality(bps, robots, resources, time)
     end
 
     results = [0]
-    if resources[1] < 4
+    ores = [bp[1] for bp in bps]
+    if any(resources[1] .< ores)
         push!(results, quality(bps, robots, next_resources, time))
     end
 
@@ -39,7 +40,7 @@ function quality(bps, robots, resources, time)
         push!(results, quality(bps, robots +  [0, 1, 0, 0], next_resources - bps[2], time))
     end
 
-    if all(bps[1] .<= resources) && any(robots[1] .< [bps[1][1], bps[2][1], bps[3][1], bps[4][1]])
+    if all(bps[1] .<= resources) && any(robots[1] .< ores)
         push!(results, quality(bps, robots +  [1, 0, 0, 0], next_resources - bps[1], time))
     end
 
