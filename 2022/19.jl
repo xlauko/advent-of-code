@@ -26,7 +26,7 @@ function quality(bps, robots, resources, time)
         return quality(bps, robots + [0, 0, 0, 1], next_resources - bps[4], time)
     end
 
-    if all(bps[3] .<= resources)
+    if all(bps[3] .<= resources) && robots[3] < bps[4][3]
         return quality(bps, robots +  [0, 0, 1, 0], next_resources - bps[3], time)
     end
 
@@ -35,11 +35,11 @@ function quality(bps, robots, resources, time)
         push!(results, quality(bps, robots, next_resources, time))
     end
 
-    if all(bps[2] .<= resources)
+    if all(bps[2] .<= resources) && robots[2] < bps[3][2]
         push!(results, quality(bps, robots +  [0, 1, 0, 0], next_resources - bps[2], time))
     end
 
-    if all(bps[1] .<= resources)
+    if all(bps[1] .<= resources) && any(robots[1] .< [bps[1][1], bps[2][1], bps[3][1], bps[4][1]])
         push!(results, quality(bps, robots +  [1, 0, 0, 0], next_resources - bps[1], time))
     end
 
