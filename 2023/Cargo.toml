@@ -11,6 +11,10 @@ edition = "2021"
 name = "day01"
 path = "src/bin/day01.rs"
 
+[[bin]]
+name = "day02"
+path = "src/bin/day02.rs"
+
 [lib]
 name = "aoc"
 path = "src/aoc/mod.rs"
