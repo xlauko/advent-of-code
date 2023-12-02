@@ -1,4 +1,3 @@
-use std::path::Path;
 use aoc::input::{file_read_lines};
 
 const NUMS : &[&str] = &[ "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" ];
@@ -18,8 +17,7 @@ pub fn sum_calibration_values(lines: Vec<String>, parse: bool) -> u32 {
 }
 
 fn main() {
-    let path = Path::new("input.txt");
-    let lines = file_read_lines(path);
+    let lines = file_read_lines("input.txt");
     let sum = sum_calibration_values(lines, true);
     println!("{:?}", sum);
 }
