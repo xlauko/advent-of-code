@@ -10,12 +10,11 @@ fn is_valid_symbol(symbol: char) -> bool {
 fn parse_line(input: &str) -> Vec<(u32, std::ops::Range<usize>)> {
     let re = Regex::new(r"(\d+)").unwrap();
     re.find_iter(input)
-        .map(|m| {
+        .mapc(|m| {
             let number = m.as_str().parse().unwrap();
             let range = m.start()..m.end();
             (number, range)
         })
-        .collect()
 }
 
 fn parse_numbers(schema: &Vec<Vec<char>>) -> Vec<Vec<u32>> {
