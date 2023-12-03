@@ -1,10 +1,12 @@
 use std::fs::File;
 use std::io::{self, Read};
 
+use crate::iter::{IteratorExt, VecExt};
+
 pub fn read_lines<I: Read>(mut source: I) -> Result<Vec<String>, io::Error> {
     let mut contents: String = String::new();
     source.read_to_string(&mut contents)?;
-    Ok(contents.lines().map(String::from).collect())
+    Ok(contents.lines().mapc(String::from))
 }
 
 pub fn file_read_lines(path: &str) -> Vec<String> {
@@ -27,15 +29,22 @@ pub fn read_by_chunks(path: &str) -> Vec<Vec<String>> {
 }
 
 pub fn file_read_nums(path: &str) -> Vec<u32> {
-    file_read_lines(path)
-        .iter()
-        .filter_map(|line| line.parse().ok())
-        .collect()
+    file_read_lines(path).filter_mapc(|line| line.parse().ok())
 }
 
 pub fn chunks_read_nums(path: &str) -> Vec<Vec<u32>> {
     read_by_chunks(path)
-        .iter()
-        .map(|chunk| chunk.iter().filter_map(|line| line.parse().ok()).collect())
-        .collect()
+        .mapc(|chunk|
+            chunk.filter_mapc(|line| line.parse().ok())
+        )
+}
+
+pub fn file_read_chars(path: &str) -> Vec<Vec<char>> {
+    file_read_lines(path).mapc(|line| line.chars().collect())
+}
+
+pub fn chunks_read_chars(path: &str) -> Vec<Vec<Vec<char>>> {
+    read_by_chunks(path).mapc(|chunk|
+        chunk.mapc(|line| line.chars().collect())
+    )
 }

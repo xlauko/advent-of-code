@@ -1,35 +1,34 @@
 use aoc::input::file_read_lines;
+use aoc::iter::{IteratorExt, VecExt};
 
 type CubeCount = (u32, u32, u32);
 
 fn main() {
     let games: Vec<Vec<CubeCount>> = file_read_lines("input.txt")
-        .iter()
-        .map(|game| parse_game(game))
-        .collect();
+        .mapc(|game| parse_game(game));
 
     let bounds = (12, 13, 14);
 
     let possible_games: usize = games
-        .iter()
         .enumerate()
-        .filter_map(|(index, rounds)| {
+        .filter_map(|(index, rounds)|
             Some(index + 1).filter(|_| is_possible_game(rounds, bounds))
-        })
+        )
         .sum();
 
     println!("Part 1: {}", possible_games);
 
-    let total_power: u32 = games
-        .iter()
-        .map(|rounds| find_minimum_power(rounds))
-        .sum();
+    let total_power: u32 = games.map(|rounds| find_minimum_power(rounds)).sum();
 
     println!("Part 2: {}", total_power);
 }
 
 fn parse_game(game: &str) -> Vec<CubeCount> {
-    game.splitn(2, ':').nth(1).unwrap().trim().split(';').map(parse_round).collect()
+    game.splitn(2, ':')
+        .nthu(1)
+        .trim()
+        .split(';')
+        .mapc(parse_round)
 }
 
 fn parse_round(round: &str) -> CubeCount {
@@ -50,14 +49,13 @@ fn parse_round(round: &str) -> CubeCount {
 }
 
 fn is_possible_game(rounds: &[CubeCount], bounds: CubeCount) -> bool {
-    rounds.iter().all(|&count| {
-        count.0 <= bounds.0 && count.1 <= bounds.1 && count.2 <= bounds.2
-    })
+    rounds
+        .iter()
+        .all(|&count| count.0 <= bounds.0 && count.1 <= bounds.1 && count.2 <= bounds.2)
 }
 
 fn find_minimum_power(rounds: &[CubeCount]) -> u32 {
     let mut bounds = (0, 0, 0);
-
     for count in rounds {
         bounds.0 = bounds.0.max(count.0);
         bounds.1 = bounds.1.max(count.1);
