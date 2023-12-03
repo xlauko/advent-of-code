@@ -59,7 +59,7 @@ fn main() {
     let parts = parts(&schema, &numbers);
 
     println!("Part 1: {}", parts.iter()
-        .flat_map(|&(_, ref inner_vec)| inner_vec.iter().cloned())
+        .flat_map(|&(_, ref inner_vec)| inner_vec)
         .sum::<u32>()
     );
 
