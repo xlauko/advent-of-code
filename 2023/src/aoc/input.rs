@@ -48,3 +48,7 @@ pub fn chunks_read_chars(path: &str) -> Vec<Vec<Vec<char>>> {
         chunk.mapc(|line| line.chars().collect())
     )
 }
+
+pub fn nums(line: &str) -> Vec<u64> {
+    line.split_whitespace().filter_mapc(|num| num.parse().ok())
+}

@@ -17,7 +17,6 @@ pub trait IteratorExt: Iterator {
         self.filter_map(f).collect()
     }
 
-
     fn nextu(&mut self) -> Self::Item {
         self.next().unwrap()
     }
@@ -43,6 +42,16 @@ pub trait VecExt<T> {
         F: FnMut(&T) -> Option<U>;
 
     fn enumerate(&self) -> Enumerate<std::slice::Iter<T>>;
+
+    fn fold<B, F>(&self, init: B, f: F) -> B
+    where
+        F: FnMut(B, &T) -> B;
+
+    fn minu(&self) -> &T
+        where T : Ord;
+
+    fn maxu(&self) -> &T
+        where T : Ord;
 }
 
 impl<T> VecExt<T> for Vec<T> {
@@ -69,5 +78,25 @@ impl<T> VecExt<T> for Vec<T> {
 
     fn enumerate(&self) -> Enumerate<std::slice::Iter<T>> {
         self.iter().enumerate()
+    }
+
+    fn fold<B, F>(&self, init: B, f: F) -> B
+        where
+            Self: Sized,
+            F: FnMut(B, &T) -> B
+    {
+        self.iter().fold(init, f)
+    }
+
+    fn minu(&self) -> &T
+        where T : Ord
+    {
+        self.iter().min().unwrap()
+    }
+
+    fn maxu(&self) -> &T
+        where T : Ord
+    {
+        self.iter().max().unwrap()
     }
 }
