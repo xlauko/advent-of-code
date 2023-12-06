@@ -4,7 +4,7 @@ fn solve(time: Vec<u64>, distance: Vec<u64>) -> u64 {
     time.iter()
         .zip(distance.iter())
         .map(|(&t, &d)| {
-            (0..t).filter(|&h| h * (t - h) > d).count() as u64
+            (1..t).filter(|&h| h * (t - h) > d).count() as u64
         })
         .product()
 }
