@@ -49,6 +49,10 @@ pub fn chunks_read_chars(path: &str) -> Vec<Vec<Vec<char>>> {
     )
 }
 
-pub fn nums(line: &str) -> Vec<u64> {
+pub fn unums(line: &str) -> Vec<u64> {
+    line.split_whitespace().filter_mapc(|num| num.parse().ok())
+}
+
+pub fn inums(line: &str) -> Vec<i64> {
     line.split_whitespace().filter_mapc(|num| num.parse().ok())
 }

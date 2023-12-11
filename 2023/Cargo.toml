@@ -14,6 +14,13 @@ syn = "1.0"
 task = { path = "./task" }
 itertools = "0.10.0"
 counter = "0.5.7"
+num = "0.4.1"
+nalgebra = "0.32.3"
+num-complex = "0.4.4"
+const_fn = "0.4.9"
+lazy_static = "1.4.0"
+num-traits = "0.2.17"
+ndarray = "0.15.6"
 
 [[bin]]
 name = "day01"
