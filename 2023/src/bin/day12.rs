@@ -1,34 +1,30 @@
 use memoize::memoize;
 use aoc::input::*;
 use aoc::iter::*;
+use itertools::Itertools;
 
 fn main() {
-    let input: Vec<String> = file_read_lines("input.txt");
+    let input: Vec<(String, Vec<usize>)> = file_read_lines("input.txt")
+        .mapc(|line| {
+            let parts = line.split_whitespace().collect_vec();
+            let springs = parts.get(0).cloned().unwrap().to_string();
+            let groups = parts.get(1).unwrap().split(",").mapc(|x| x.parse().unwrap());
+            (springs, groups)
+        });
 
-    for part in 1..=2 {
-        let mut total = 0;
+    println!("Part 1: {}", input.clone()
+        .map(|(springs, groups)| solve(springs.to_string(), groups.to_vec())).sum::<usize>()
+    );
 
-        for line in input.clone() {
-            let mut parts = line.split_whitespace();
-            let left = parts.nextu().to_string();
-            let right: Vec<usize> = parts.nextu().split(",").mapc(|x| x.parse().unwrap());
-
-            if part == 2 {
-                let left = vec![left.clone(); 5].join("?");
-                let right = vec![right.clone(); 5].into_iter().flatten().collect();
-                let res = solve(left, right);
-                total += res;
-            } else {
-                total += solve(left, right);
-            }
-        }
-
-        println!("Part {}: {}", part, total);
-    }
+    println!("Part 2: {}", input.map(|(springs, groups)| {
+        let springs = vec![springs.clone(); 5].join("?");
+        let groups = vec![groups.clone(); 5].into_iter().flatten().collect();
+        solve(springs, groups)
+    }).sum::<usize>());
 }
 
 #[memoize]
-fn solve(springs: String, groups: Vec<usize>) -> u64 {
+fn solve(springs: String, groups: Vec<usize>) -> usize {
     if springs.is_empty() {
         return if groups.is_empty() { 1 } else { 0 };
     }
