@@ -21,6 +21,7 @@ const_fn = "0.4.9"
 lazy_static = "1.4.0"
 num-traits = "0.2.17"
 ndarray = "0.15.6"
+memoize = "0.4.1"
 
 [[bin]]
 name = "day01"
