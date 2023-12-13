@@ -1,6 +1,7 @@
 use std::ops::{Add, Index};
 use lazy_static::lazy_static;
-use crate::input::file_read_chars;
+use crate::input::*;
+use crate::iter::*;
 use std::fmt;
 
 //
@@ -106,6 +107,14 @@ impl<T: fmt::Debug + std::fmt::Display> fmt::Debug for Grid<T> {
 }
 
 impl<T> Grid<T> {
+    pub fn rows_len(&self) -> usize {
+        self.data.len()
+    }
+
+    pub fn cols_len(&self) -> usize {
+        self.data.get(0).map_or(0, |row| row.len())
+    }
+
     pub fn rows(&self) -> RowIter<T> {
         RowIter {
             grid: self,
@@ -277,6 +286,12 @@ pub fn file_read_grid(path: &str) -> Grid<char> {
     Grid { data: file_read_chars(path) }
 }
 
+pub fn file_read_grids(path: &str) -> Vec<Grid<char>> {
+    read_by_chunks(path).mapc(|chunk|
+        Grid{ data: chunk.mapc(|line| line.chars().collect()) }
+    )
+}
+
 // impl<T: Clone> Grid<T>
 // {
 //     pub fn neighbors<'a>(&'a self, pos: Pos, dirs: &'a Vec<Dir>) -> impl Iterator<Item = T> + 'a {
@@ -294,3 +309,11 @@ pub fn file_read_grid(path: &str) -> Grid<char> {
 //         self.neighbors(pos, &N8)
 //     }
 // }
+
+pub fn transpose<T: Clone + Copy + fmt::Debug>(grid: &Grid<T>) -> Grid<T> {
+    let mut data: Vec<Vec<T>> = Vec::new();
+    for col in grid.columns() {
+        data.push(col.into_iter().map(|&c| c).collect());
+    }
+    Grid { data }
+}
