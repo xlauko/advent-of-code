@@ -75,6 +75,7 @@ impl Pos {
 // Grid
 //
 
+#[derive(Hash, PartialEq, Eq, Clone)]
 pub struct Grid<T> {
     pub data: Vec<Vec<T>>,
 }
@@ -113,6 +114,10 @@ impl<T> Grid<T> {
 
     pub fn cols_len(&self) -> usize {
         self.data.get(0).map_or(0, |row| row.len())
+    }
+
+    pub fn dims(&self) -> (usize, usize) {
+        (self.rows_len(), self.cols_len())
     }
 
     pub fn rows(&self) -> RowIter<T> {
@@ -310,10 +315,6 @@ pub fn file_read_grids(path: &str) -> Vec<Grid<char>> {
 //     }
 // }
 
-pub fn transpose<T: Clone + Copy + fmt::Debug>(grid: &Grid<T>) -> Grid<T> {
-    let mut data: Vec<Vec<T>> = Vec::new();
-    for col in grid.columns() {
-        data.push(col.into_iter().map(|&c| c).collect());
-    }
-    Grid { data }
+pub fn transpose<T: Clone + Copy + fmt::Debug>(grid: &Grid<T>) -> Grid<&T> {
+    Grid { data: grid.columns().collect() }
 }

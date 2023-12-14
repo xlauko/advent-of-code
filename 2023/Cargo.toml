@@ -22,6 +22,7 @@ lazy_static = "1.4.0"
 num-traits = "0.2.17"
 ndarray = "0.15.6"
 memoize = "0.4.1"
+rayon = "1.8.0"
 
 [[bin]]
 name = "day01"
@@ -42,6 +43,14 @@ path = "src/bin/day04.rs"
 [[bin]]
 name = "day05"
 path = "src/bin/day05.rs"
+
+[[bin]]
+name = "day12"
+path = "src/bin/day12.rs"
+
+[[bin]]
+name = "day14"
+path = "src/bin/day14.rs"
 
 [lib]
 name = "aoc"
