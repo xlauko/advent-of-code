@@ -1,4 +1,4 @@
-use std::ops::{Add, Index};
+use std::ops::{Add, Index, IndexMut};
 use lazy_static::lazy_static;
 use crate::input::*;
 use crate::iter::*;
@@ -80,11 +80,39 @@ pub struct Grid<T> {
     pub data: Vec<Vec<T>>,
 }
 
+impl<T> Index<usize> for Grid<T> {
+    type Output = Vec<T>;
+
+    fn index(&self, index: usize) -> &Vec<T> {
+        &self.data[index]
+    }
+}
+
+impl<T> IndexMut<usize> for Grid<T> {
+    fn index_mut(&mut self, index: usize) -> &mut Vec<T> {
+        &mut self.data[index]
+    }
+}
+
 impl<T> Index<Pos> for Grid<T> {
     type Output = T;
 
     fn index(&self, pos: Pos) -> &T {
         &self.data[pos.y][pos.x]
+    }
+}
+
+impl<T> Index<(usize, usize)> for Grid<T> {
+    type Output = T;
+
+    fn index(&self, (i, j): (usize, usize)) -> &T {
+        &self.data[i][j]
+    }
+}
+
+impl<T> IndexMut<(usize, usize)> for Grid<T> {
+    fn index_mut(&mut self, (i, j): (usize, usize)) -> &mut T {
+        &mut self.data[i][j]
     }
 }
 

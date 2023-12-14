@@ -7,13 +7,13 @@ fn slide(grid: &mut Grid<char>) {
         let mut ci = 0;
 
         for i in 0..n {
-            if grid.data[i][j] == '#' {
+            if grid[i][j] == '#' {
                 ci = i + 1;
             }
 
-            if grid.data[i][j] == 'O' {
-                grid.data[i][j] = '.';
-                grid.data[ci][j] = 'O';
+            if grid[i][j] == 'O' {
+                grid[i][j] = '.';
+                grid[ci][j] = 'O';
                 ci += 1;
             }
         }
@@ -24,7 +24,7 @@ fn score(grid: &Grid<char>) -> usize {
     grid.data.iter()
         .enumerate()
         .map(|(i, row)| {
-            (grid.data.len() - i) * row.iter().filter(|&&c| c == 'O').count()
+            (grid.rows_len() - i) * row.iter().filter(|&&c| c == 'O').count()
         })
         .sum()
 }
@@ -35,7 +35,7 @@ fn rotate_inplace(grid: &mut Grid<char>) {
 
     for i in 0..n {
         for j in 0..m {
-            rotated[j][n - i - 1] = grid.data[i][j];
+            rotated[j][n - i - 1] = grid[i][j];
         }
     }
 
