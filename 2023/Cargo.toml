@@ -52,6 +52,10 @@ path = "src/bin/day12.rs"
 name = "day14"
 path = "src/bin/day14.rs"
 
+[[bin]]
+name = "day16"
+path = "src/bin/day16.rs"
+
 [lib]
 name = "aoc"
 path = "src/aoc/mod.rs"

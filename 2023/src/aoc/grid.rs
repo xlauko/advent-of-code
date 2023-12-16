@@ -8,19 +8,25 @@ use std::fmt;
 // Position & Direction
 //
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 pub struct Vec2<T> {
     pub x: T,
     pub y: T,
 }
 
+impl<T> Vec2<T> {
+    pub fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
 pub type Dir = Vec2<isize>;
 pub type Pos = Vec2<usize>;
 
-const U: Dir = Dir { x: 0, y: -1 };
-const D: Dir = Dir { x: 0, y: 1 };
-const R: Dir = Dir { x: 1, y: 0 };
-const L: Dir = Dir { x: -1, y: 0 };
+pub const U: Dir = Dir { x: -1, y: 0 };
+pub const D: Dir = Dir { x: 1, y: 0 };
+pub const R: Dir = Dir { x: 0, y: 1 };
+pub const L: Dir = Dir { x: 0, y: -1 };
 
 // neighbors
 lazy_static! {
@@ -45,6 +51,16 @@ where
 impl<T> From<(T, T)> for Vec2<T> {
     fn from(tuple: (T, T)) -> Self {
         Vec2 { x: tuple.0, y: tuple.1 }
+    }
+}
+
+pub trait TupleToVec2<T> {
+    fn to_vec2(self) -> Vec2<T>;
+}
+
+impl<T> TupleToVec2<T> for (T, T) {
+    fn to_vec2(self) -> Vec2<T> {
+        Vec2::new(self.0, self.1)
     }
 }
 
@@ -98,7 +114,7 @@ impl<T> Index<Pos> for Grid<T> {
     type Output = T;
 
     fn index(&self, pos: Pos) -> &T {
-        &self.data[pos.y][pos.x]
+        &self.data[pos.x][pos.y]
     }
 }
 
@@ -345,4 +361,51 @@ pub fn file_read_grids(path: &str) -> Vec<Grid<char>> {
 
 pub fn transpose<T: Clone + Copy + fmt::Debug>(grid: &Grid<T>) -> Grid<&T> {
     Grid { data: grid.columns().collect() }
+}
+
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+pub struct Beam {
+    pub pos: Pos,
+    pub dir: Dir,
+}
+
+impl From<((usize, usize), Dir)> for Beam {
+    fn from(((x, y), dir): ((usize, usize), Dir)) -> Self {
+        Beam { pos: (x, y).into(), dir: dir }
+    }
+}
+
+impl From<(Pos, Dir)> for Beam {
+    fn from((pos, dir): (Pos, Dir)) -> Self {
+        Beam { pos: pos, dir: dir }
+    }
+}
+
+impl Beam {
+    pub fn mirror_left(&self) -> Beam {
+        Beam{pos: self.pos, dir: match self.dir { U => L, D => R, L => U, R => D, _ => panic!() }}
+    }
+
+    pub fn mirror_right(&self) -> Beam {
+        Beam{pos: self.pos, dir: match self.dir { U => R, D => L, L => D, R => U, _ => panic!() }}
+    }
+
+    pub fn step<T>(&self, grid: &Grid<T>) -> Option::<Beam> {
+        let next = Vec2::<isize>{
+            x: self.pos.x as isize + self.dir.x,
+            y: self.pos.y as isize + self.dir.y,
+        };
+
+        if next.x >= 0 && next.y >= 0 && next.x < grid.cols_len() as isize && next.y < grid.rows_len() as isize {
+            let next_pos = Pos{ x: next.x as usize, y: next.y as usize };
+            Some(Beam{pos: next_pos, dir: self.dir})
+        } else {
+            None
+        }
+    }
+
+    pub fn up(&self)    -> Beam { (self.pos, U).into() }
+    pub fn down(&self)  -> Beam { (self.pos, D).into() }
+    pub fn right(&self) -> Beam { (self.pos, R).into() }
+    pub fn left(&self)  -> Beam { (self.pos, L).into() }
 }
