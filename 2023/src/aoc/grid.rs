@@ -1,4 +1,5 @@
 use std::ops::{Add, Index, IndexMut};
+use itertools::Itertools;
 use lazy_static::lazy_static;
 use crate::input::*;
 use crate::iter::*;
@@ -27,6 +28,20 @@ pub const U: Dir = Dir { x: -1, y: 0 };
 pub const D: Dir = Dir { x: 1, y: 0 };
 pub const R: Dir = Dir { x: 0, y: 1 };
 pub const L: Dir = Dir { x: 0, y: -1 };
+
+impl Dir {
+    pub fn turn_left(self) -> Dir {
+        match self { U => L, D => R, L => D, R => U, _ => panic!() }
+    }
+
+    pub fn turn_right(self) -> Dir {
+        match self { U => R, D => L, L => U, R => D, _ => panic!() }
+    }
+
+    pub fn turn_back(self) -> Dir {
+        match self { U => D, D => U, L => R, R => L, _ => panic!() }
+    }
+}
 
 // neighbors
 lazy_static! {
@@ -207,7 +222,22 @@ impl<T> Grid<T> {
             predicate,
             col: 0,
         }
+
     }
+
+    pub fn next_in_bounds(&self, pos: Pos, dir: Dir) -> Option<Pos> {
+        let next = Vec2::<isize>{
+            x: pos.x as isize + dir.x,
+            y: pos.y as isize + dir.y,
+        };
+
+        if next.x >= 0 && next.y >= 0 && next.x < self.cols_len() as isize && next.y < self.rows_len() as isize {
+            return Some((next.x as usize, next.y as usize).into());
+        }
+
+        None
+    }
+
 }
 
 pub struct RowIter<'a, T> {
@@ -333,6 +363,12 @@ where
 
 pub fn file_read_grid(path: &str) -> Grid<char> {
     Grid { data: file_read_chars(path) }
+}
+
+pub fn file_read_grid_u8(path: &str) -> Grid<u8> {
+    Grid { data: file_read_chars(path).map(|row| {
+        row.iter().map(|&ch| ch as u8 - b'0').collect()
+    }).collect_vec() }
 }
 
 pub fn file_read_grids(path: &str) -> Vec<Grid<char>> {
