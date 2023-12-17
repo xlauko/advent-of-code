@@ -23,6 +23,9 @@ num-traits = "0.2.17"
 ndarray = "0.15.6"
 memoize = "0.4.1"
 rayon = "1.8.0"
+dijkstra = "0.1.2"
+pathfinding = "4.6.0"
+priority-queue = "1.3.2"
 
 [[bin]]
 name = "day01"
@@ -55,6 +58,10 @@ path = "src/bin/day14.rs"
 [[bin]]
 name = "day16"
 path = "src/bin/day16.rs"
+
+[[bin]]
+name = "day17"
+path = "src/bin/day17.rs"
 
 [lib]
 name = "aoc"
