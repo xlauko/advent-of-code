@@ -1,4 +1,4 @@
-use std::ops::{Add, Index, IndexMut};
+use std::ops::{Add, Mul, Index, IndexMut};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use crate::input::*;
@@ -40,6 +40,21 @@ impl Dir {
 
     pub fn turn_back(self) -> Dir {
         match self { U => D, D => U, L => R, R => L, _ => panic!() }
+    }
+
+    pub fn length(&self) -> isize {
+        (self.x * self.x + self.y * self.y).isqrt()
+    }
+}
+
+impl Mul<isize> for Dir {
+    type Output = Dir;
+
+    fn mul(self, rhs: isize) -> Dir {
+        Dir {
+            x: self.x * rhs,
+            y: self.y * rhs,
+        }
     }
 }
 
