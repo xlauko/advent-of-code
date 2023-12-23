@@ -41,10 +41,6 @@ impl Dir {
     pub fn turn_back(self) -> Dir {
         match self { U => D, D => U, L => R, R => L, _ => panic!() }
     }
-
-    pub fn length(&self) -> isize {
-        (self.x * self.x + self.y * self.y).isqrt()
-    }
 }
 
 impl Mul<isize> for Dir {
@@ -159,6 +155,12 @@ impl<T> Index<(usize, usize)> for Grid<T> {
 impl<T> IndexMut<(usize, usize)> for Grid<T> {
     fn index_mut(&mut self, (i, j): (usize, usize)) -> &mut T {
         &mut self.data[i][j]
+    }
+}
+
+impl<T> IndexMut<Pos> for Grid<T> {
+    fn index_mut(&mut self, pos: Pos) -> &mut T {
+        &mut self.data[pos.x][pos.y]
     }
 }
 
