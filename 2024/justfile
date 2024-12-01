@@ -1,0 +1,20 @@
+alias r := run
+alias w := watch
+alias e := example
+alias we := watch-example
+alias t := test
+
+_default:
+    @just --list
+
+run day *args:
+    uiua run --no-format {{args}} {{day}}.ua ./inputs/{{trim_start_match(day, "0")}}
+
+watch day:
+    uiua watch --no-format {{day}}.ua ./inputs/{{trim_start_match(day, "0")}}
+
+example day ex:
+    uiua run --no-format {{day}}.ua ./examples/{{day}}/{{ex}}
+
+watch-example day ex:
+    uiua watch --no-format {{day}}.ua ./examples/{{day}}/{{ex}}
