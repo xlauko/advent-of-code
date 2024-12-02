@@ -1,18 +1,12 @@
 # Experimental!
+Util ~ "utils.ua"
 
-&fras ⊣ &args
-Input ←
-
-Parse ← ⊜(□⊜⋕⊸≠@ )⊸≠@\n
-
-IsMonotonic ← =1⧻◴±
+Input ← Util~ReadInput
 
 StepInRange ← /×/≠⊞<1_4⌵
+IsSafe ← ×⊃(StepInRange|Util~Deltas)≡/-◫2
 
-IsSafe ← ×⊃(StepInRange|IsMonotonic)≡/-◫2
-
-Part₁ ← /+≡◇IsSafe Parse
-
-Part₂ ← /+≡◇(/↥≡(IsSafe⍜↻↘₁)⊙¤°⊏) Parse
+Part₁ ← /+≡◇IsSafe Util~ParseNumbers
+Part₂ ← /+≡◇(/↥≡(IsSafe⍜↻↘₁)⊙¤°⊏) Util~ParseNumbers
 
 ⊟⊃Part₁Part₂ Input
