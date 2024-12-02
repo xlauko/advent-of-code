@@ -2,7 +2,6 @@ alias r := run
 alias w := watch
 alias e := example
 alias we := watch-example
-alias t := test
 
 _default:
     @just --list
