@@ -1,0 +1,121 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 30,
+      "patch": 0
+    },
+    "configurePresets": [
+      {
+        "name": "default",
+        "displayName": "Default",
+        "binaryDir": "${sourceDir}/builds/${presetName}",
+        "generator": "Ninja Multi-Config",
+        "warnings": {
+          "dev": true,
+          "deprecated": true,
+          "uninitialized": true,
+          "unusedCli": true,
+          "systemVars": false
+        },
+        "errors": {
+          "dev": false,
+          "deprecated": true
+        },
+        "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "cacheVariables": {
+            "CMAKE_CONFIGURATION_TYPES": "Release;RelWithDebInfo;Debug",
+            "CMAKE_PREFIX_PATH": "$env{CMAKE_PREFIX_PATH}",
+            "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/lld.toolchain.cmake",
+            "CMAKE_CXX_FLAGS": "-stdlib=libc++",
+            "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/vcpkg/triplets",
+            "VCPKG_TARGET_TRIPLET": "arm64-osx-libcxx"
+        },
+        "environment": {
+          "VCPKG_FORCE_SYSTEM_BINARIES=1": "1"
+        }
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "default",
+        "hidden": true,
+        "configurePreset": "default"
+      },
+      {
+        "name": "debug",
+        "configurePreset": "default",
+        "displayName": "Debug",
+        "configuration": "Debug"
+      },
+      {
+        "name": "release",
+        "configurePreset": "default",
+        "displayName": "Release",
+        "configuration": "Release"
+      },
+      {
+        "name": "relwithdebinfo",
+        "configurePreset": "default",
+        "displayName": "RelWithDebInfo",
+        "configuration": "RelWithDebInfo"
+      }
+    ],
+    "testPresets": [
+      {
+        "name": "test-base",
+        "hidden": true,
+        "output": {
+          "outputOnFailure": true,
+          "verbosity": "default"
+        },
+        "execution": {
+          "noTestsAction": "error",
+          "stopOnFailure": false
+        }
+      },
+      {
+        "name": "default",
+        "configurePreset": "default",
+        "hidden": true,
+        "inherits": "test-base"
+      },
+      {
+        "name": "release",
+        "configurePreset": "default",
+        "inherits": "default",
+        "configuration": "Release"
+      },
+      {
+        "name": "debug",
+        "configurePreset": "default",
+        "inherits": "default",
+        "configuration": "Debug"
+      },
+      {
+        "name": "relwithdebinfo",
+        "configurePreset": "default",
+        "inherits": "default",
+        "configuration": "RelWithDebInfo"
+      }
+    ],
+    "workflowPresets": [
+      {
+        "name": "debug",
+        "steps": [
+            {
+              "type": "configure",
+              "name": "default"
+            },
+            {
+              "type": "build",
+              "name": "debug"
+            },
+            {
+              "type": "test",
+              "name": "debug"
+            }
+        ]
+      }
+    ]
+  }

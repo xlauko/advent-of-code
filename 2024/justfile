@@ -7,13 +7,37 @@ _default:
     @just --list
 
 run day *args:
-    uiua run --no-format {{args}} {{day}}.ua ./inputs/{{trim_start_match(day, "0")}}
+    if [ {{day}} -ge 7 ]; then \
+        cmake --build --preset local-release --target {{day}} && \
+        ./builds/local/Release/{{day}} ./inputs/{{trim_start_match(day, "0")}}; \
+    else \
+        uiua run --no-format {{args}} {{day}}.ua ./inputs/{{trim_start_match(day, "0")}}; \
+    fi
 
 watch day:
-    uiua watch --no-format {{day}}.ua ./inputs/{{trim_start_match(day, "0")}}
+    if [ {{day}} -ge 7 ]; then \
+        echo "{{day}}.cpp" | entr -c sh -c ' \
+        cmake --build --preset local-release --target {{day}} && \
+        ./builds/local/Release/{{day}} ./inputs/{{trim_start_match(day, "0")}}; \
+        '; \
+    else \
+        uiua watch --no-format {{day}}.ua ./inputs/{{trim_start_match(day, "0")}}; \
+    fi
 
 example day ex:
-    uiua run --no-format {{day}}.ua ./examples/{{day}}/{{ex}}
+    if [ {{day}} -ge 7 ]; then \
+        cmake --build --preset local-release --target {{day}} && \
+        ./builds/local/Release/{{day}} ./examples/{{day}}/{{ex}}; \
+    else \
+        uiua run --no-format {{day}}.ua ./examples/{{day}}/{{ex}}; \
+    fi
 
 watch-example day ex:
-    uiua watch --no-format {{day}}.ua ./examples/{{day}}/{{ex}}
+    if [ {{day}} -ge 7 ]; then \
+        echo "{{day}}.cpp" | entr -c sh -c ' \
+        cmake --build --preset local-release --target {{day}} && \
+        ./builds/local/Release/{{day}} ./examples/{{day}}/{{ex}}; \
+        '; \
+    else \
+        uiua watch --no-format {{day}}.ua ./examples/{{day}}/{{ex}}; \
+    fi

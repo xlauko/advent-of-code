@@ -1,0 +1,68 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 30,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "local",
+      "inherits": "default",
+      "displayName": "Local",
+      "cacheVariables": {
+          "CMAKE_INSTALL_PREFIX": "/Users/henrichlauko/opt/",
+          "CMAKE_C_COMPILER": "clang",
+          "CMAKE_CXX_COMPILER": "clang++",
+          "CMAKE_SYSROOT": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "local-debug",
+      "configurePreset": "local",
+      "displayName": "Local Debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "local-release",
+      "configurePreset": "local",
+      "displayName": "Local Release",
+      "configuration": "Release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "local-debug",
+      "configurePreset": "local",
+      "inherits": "debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "local-release",
+      "configurePreset": "local",
+      "inherits": "release",
+      "configuration": "Release"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "local-debug",
+      "steps": [
+          {
+            "type": "configure",
+            "name": "local"
+          },
+          {
+            "type": "build",
+            "name": "local-debug"
+          },
+          {
+            "type": "test",
+            "name": "local-debug"
+          }
+      ]
+    }
+  ]
+}
