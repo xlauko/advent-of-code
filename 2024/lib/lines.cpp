@@ -1,5 +1,3 @@
-module;
-
 export module aoc:lines;
 
 import std;
@@ -16,6 +14,16 @@ namespace aoc {
         while (std::getline(in, line)) {
             co_yield line;
         }
+    }
+
+    export auto text(const std::filesystem::path &file_path)
+        -> std::string
+    {
+        std::ifstream in(file_path);
+        return std::string(
+            std::istreambuf_iterator< char >(in),
+            std::istreambuf_iterator< char >()
+        );
     }
 
 } // namespace aoc
